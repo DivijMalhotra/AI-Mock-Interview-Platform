@@ -112,6 +112,7 @@ export default function PracticeDuration({ dark }: Props) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setRunning((v) => !v)}
+          suppressHydrationWarning
           style={{
             width:         44,
             height:        44,
@@ -135,6 +136,7 @@ export default function PracticeDuration({ dark }: Props) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => { setSeconds(0); setRunning(false); }}
+          suppressHydrationWarning
           style={{
             width:         44,
             height:        44,

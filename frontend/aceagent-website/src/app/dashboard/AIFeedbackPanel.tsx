@@ -94,6 +94,7 @@ export default function AIFeedbackPanel({ dark }: Props) {
         </div>
         <motion.button
           whileHover={{ scale: 1.06 }}
+          suppressHydrationWarning
           style={{
             display:      'flex',
             alignItems:   'center',

@@ -52,6 +52,7 @@ export default function RecentAnalysis({ dark }: Props) {
         </div>
         <motion.button
           whileHover={{ scale: 1.08 }}
+          suppressHydrationWarning
           style={{
             display:      'flex',
             alignItems:   'center',

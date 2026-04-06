@@ -117,6 +117,7 @@ export default function UpcomingInterview({ dark }: Props) {
         whileTap={!loading ? { scale: 0.97 } : {}}
         onClick={handleJoin}
         disabled={loading}
+        suppressHydrationWarning
         style={{
           width:          '100%',
           padding:        '13px 0',

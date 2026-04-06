@@ -38,6 +38,7 @@ export default function DashboardHeader({ dark, isMobile, onToggleDark, onToggle
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={onToggleSidebar}
+          suppressHydrationWarning
           style={{
             background: 'none',
             border: 'none',
@@ -116,6 +117,7 @@ export default function DashboardHeader({ dark, isMobile, onToggleDark, onToggle
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         onClick={onToggleDark}
+        suppressHydrationWarning
         style={{
           width:         isMobile ? 32 : 38,
           height:        isMobile ? 32 : 38,
@@ -139,6 +141,7 @@ export default function DashboardHeader({ dark, isMobile, onToggleDark, onToggle
       {!isMobile && (
         <motion.button
           whileHover={{ scale: 1.08 }}
+          suppressHydrationWarning
           style={{
             width:         38,
             height:        38,
@@ -160,6 +163,7 @@ export default function DashboardHeader({ dark, isMobile, onToggleDark, onToggle
       {!isMobile && (
         <motion.button
           whileHover={{ scale: 1.08 }}
+          suppressHydrationWarning
           style={{
             width:         38,
             height:        38,

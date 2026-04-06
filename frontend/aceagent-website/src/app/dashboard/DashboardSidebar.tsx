@@ -325,6 +325,7 @@ export default function DashboardSidebar({
                 Practice on the go, anytime.
               </div>
               <button
+                suppressHydrationWarning
                 style={{
                   width:        '100%',
                   padding:      '8px 0',
@@ -350,6 +351,7 @@ export default function DashboardSidebar({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={onToggle}
+            suppressHydrationWarning
             style={{
               position:       'absolute',
               top:            22,
