@@ -20,9 +20,11 @@ const EVENTS: Record<number, { title: string; time: string; type: string; color:
 
 export default function CalendarPage() {
   const { darkMode, isMobile } = useDashboardCtx();
-  const [currentMonth] = useState(new Date().getMonth());
-  const [currentYear] = useState(new Date().getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const today = new Date().getDate();
+  const nowMonth = new Date().getMonth();
+  const nowYear = new Date().getFullYear();
 
   const text = darkMode ? '#f1f5f9' : '#0f172a';
   const sub = darkMode ? '#64748b' : '#9ca3af';
@@ -34,6 +36,15 @@ export default function CalendarPage() {
   const cells: (number | null)[] = [];
   for (let i = 0; i < firstDay; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+
+  const goBack = () => {
+    if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(y => y - 1); }
+    else setCurrentMonth(m => m - 1);
+  };
+  const goForward = () => {
+    if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(y => y + 1); }
+    else setCurrentMonth(m => m + 1);
+  };
 
   return (
     <>
@@ -50,9 +61,9 @@ export default function CalendarPage() {
           style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: 18, padding: '24px' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-            <button suppressHydrationWarning style={{ background: 'none', border: `1px solid ${border}`, borderRadius: 10, padding: 8, cursor: 'pointer', color: sub, display: 'flex' }}><ChevronLeft size={16} /></button>
+            <button onClick={goBack} suppressHydrationWarning style={{ background: 'none', border: `1px solid ${border}`, borderRadius: 10, padding: 8, cursor: 'pointer', color: sub, display: 'flex' }}><ChevronLeft size={16} /></button>
             <span style={{ color: text, fontSize: 18, fontWeight: 800 }}>{MONTHS[currentMonth]} {currentYear}</span>
-            <button suppressHydrationWarning style={{ background: 'none', border: `1px solid ${border}`, borderRadius: 10, padding: 8, cursor: 'pointer', color: sub, display: 'flex' }}><ChevronRight size={16} /></button>
+            <button onClick={goForward} suppressHydrationWarning style={{ background: 'none', border: `1px solid ${border}`, borderRadius: 10, padding: 8, cursor: 'pointer', color: sub, display: 'flex' }}><ChevronRight size={16} /></button>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
@@ -61,7 +72,7 @@ export default function CalendarPage() {
             ))}
             {cells.map((day, i) => {
               const events = day ? EVENTS[day] : undefined;
-              const isToday = day === today;
+              const isToday = day === today && currentMonth === nowMonth && currentYear === nowYear;
               return (
                 <div
                   key={i}
