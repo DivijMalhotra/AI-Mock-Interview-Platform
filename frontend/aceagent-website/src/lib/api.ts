@@ -1,13 +1,22 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
+async function handleResponse(response: Response, errorMessage: string) {
+  if (!response.ok) {
+    let detail = "";
+    try {
+      const data = await response.json();
+      detail = data.detail || data.error || JSON.stringify(data);
+    } catch (e) {
+      detail = response.statusText;
+    }
+    throw new Error(`${errorMessage}: ${response.status} ${detail}`);
+  }
+  return response.json();
+}
+
 export async function getSessionState(sessionId: string) {
   const response = await fetch(`${API_URL}/interview/${sessionId}`);
-  
-  if (!response.ok) {
-    throw new Error("Failed to fetch session state");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to fetch session state");
 }
 
 export async function submitAnswer(sessionId: string, answer: any) {
@@ -18,12 +27,7 @@ export async function submitAnswer(sessionId: string, answer: any) {
     },
     body: JSON.stringify(answer),
   });
-
-  if (!response.ok) {
-    throw new Error("Failed to submit answer");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to submit answer");
 }
 
 export async function startInterview(topic: string, difficulty: string = "medium") {
@@ -39,32 +43,26 @@ export async function startInterview(topic: string, difficulty: string = "medium
       focus_areas: []
     }),
   });
-
-  if (!response.ok) {
-    throw new Error("Failed to start interview");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to start interview");
 }
 
 export async function getInterviewSummary(sessionId: string) {
   const response = await fetch(`${API_URL}/interview/${sessionId}/summary`);
-  
-  if (!response.ok) {
-    throw new Error("Failed to fetch summary");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed to fetch summary");
 }
 
 export async function endInterview(sessionId: string) {
   const response = await fetch(`${API_URL}/interview/${sessionId}/end`, {
     method: "POST",
   });
+  return handleResponse(response, "Failed to end interview");
+}
 
-  if (!response.ok) {
-    throw new Error("Failed to end interview");
+export async function checkBackendHealth() {
+  try {
+    const response = await fetch(`${API_URL}/health/ready`);
+    return await response.json();
+  } catch (e) {
+    return { success: false, error: "Backend unreachable" };
   }
-
-  return response.json();
 }

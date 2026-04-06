@@ -8,6 +8,7 @@ from fastapi import APIRouter
 
 from app.core.config import settings
 from app.models.schemas import APIResponse
+from app.services.memory import redis_store
 
 router = APIRouter(prefix="/health", tags=["health"])
 
@@ -28,11 +29,14 @@ async def health_check() -> APIResponse:
 async def readiness_check() -> APIResponse:
     """
     Readiness probe — validates that critical services are reachable.
-    Phases 2-3 will add Redis and FAISS checks here.
     """
+    # Trigger a store check
+    await redis_store._get_client()
+    
     checks: dict = {
         "config_loaded": True,
-        "openai_key_set": bool(settings.openai_api_key and settings.openai_api_key != "sk-YOUR_KEY_HERE"),
+        "openai_key_set": bool(settings.openai_api_key and settings.openai_api_key.startswith("sk-")),
+        "memory_store": "in_memory" if redis_store.use_fallback else "redis",
     }
     all_ok = all(checks.values())
     return APIResponse(
