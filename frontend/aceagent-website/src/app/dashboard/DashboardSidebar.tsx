@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useClerk } from '@clerk/nextjs';
+import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   PlayCircle,
@@ -27,16 +27,16 @@ interface NavItemDef {
 }
 
 const MENU: NavItemDef[] = [
-  { Icon: LayoutDashboard, label: 'Dashboard',          href: '/dashboard', badge: null  },
-  { Icon: PlayCircle,      label: 'Practice Sessions',  href: '#',          badge: '12+' },
-  { Icon: Calendar,        label: 'Calendar',           href: '#',          badge: null  },
-  { Icon: BarChart2,       label: 'Performance Insights',href: '#',         badge: null  },
-  { Icon: BookOpen,        label: 'Interview Library',  href: '#',          badge: null  },
+  { Icon: LayoutDashboard, label: 'Dashboard',           href: '/dashboard',                   badge: null  },
+  { Icon: PlayCircle,      label: 'Practice Sessions',   href: '/dashboard/practice-sessions', badge: '12+' },
+  { Icon: Calendar,        label: 'Calendar',            href: '/dashboard/calendar',           badge: null  },
+  { Icon: BarChart2,       label: 'Performance Insights', href: '/dashboard/performance',       badge: null  },
+  { Icon: BookOpen,        label: 'Interview Library',   href: '/dashboard/library',            badge: null  },
 ];
 
 const GENERAL: NavItemDef[] = [
-  { Icon: Settings,   label: 'Settings', href: '#' },
-  { Icon: HelpCircle, label: 'Help',     href: '#' },
+  { Icon: Settings,   label: 'Settings', href: '/dashboard/settings' },
+  { Icon: HelpCircle, label: 'Help',     href: '/dashboard/help' },
   { Icon: LogOut,     label: 'Logout',   href: '/' },
 ];
 
@@ -53,7 +53,7 @@ export default function DashboardSidebar({
   dark,
   isMobile,
 }: SidebarProps) {
-  const [active, setActive] = useState('Dashboard');
+  const pathname = usePathname();
   const { signOut } = useClerk();
 
   const bg      = dark ? '#0c1032' : '#fff';
@@ -63,14 +63,13 @@ export default function DashboardSidebar({
   const accent  = '#8b5cf6';
 
   function NavItem({ Icon, label, href, badge }: NavItemDef) {
-    const isActive = active === label;
+    const isActive = href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
     const isLogout = label === 'Logout';
 
     const content = (
       <motion.div
         whileHover={{ x: collapsed ? 0 : 3 }}
         onClick={async () => {
-          setActive(label);
           if (isLogout) {
             await signOut({ redirectUrl: '/' });
           } else if (isMobile) {
