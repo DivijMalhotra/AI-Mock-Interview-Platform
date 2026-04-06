@@ -72,3 +72,22 @@ export async function getInterviewAnalysis(sessionId: string) {
   return handleResponse(response, "Failed to fetch analysis");
 }
 
+/**
+ * Upload a video/audio recording blob to the backend.
+ * Uses FormData (multipart) — no JSON Content-Type header.
+ */
+export async function uploadRecording(
+  sessionId: string,
+  videoBlob: Blob,
+  filename: string = "recording.webm",
+) {
+  const formData = new FormData();
+  formData.append("video_file", videoBlob, filename);
+
+  const response = await fetch(`${API_URL}/interview/${sessionId}/upload`, {
+    method: "POST",
+    body: formData,
+    // No Content-Type header — browser sets it with multipart boundary
+  });
+  return handleResponse(response, "Failed to upload recording");
+}

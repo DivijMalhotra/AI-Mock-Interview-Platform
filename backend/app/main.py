@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from app.core.database import engine, Base
 from app.api import interview, ws, analysis
+
+# 🔥 ADDED: Ensure uploads directory exists
+UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -32,3 +38,6 @@ app.add_middleware(
 app.include_router(interview.router, prefix="/api")
 app.include_router(ws.router, prefix="/api")
 app.include_router(analysis.router, prefix="/api")
+
+# 🔥 ADDED: Serve uploaded recordings as static files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

@@ -5,11 +5,15 @@ Interview lifecycle API endpoints.
 - POST /interview/{id}/answer → submit answer, get evaluation + next question
 - GET  /interview/{id}/summary → get full session summary
 - POST /interview/{id}/end → end session early
+- POST /interview/{id}/upload → upload video/audio recording
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+import uuid
+from pathlib import Path
+
+from fastapi import APIRouter, HTTPException, UploadFile, File
 
 from app.core.logging import logger
 from app.models.schemas import (
@@ -180,3 +184,49 @@ async def end_interview(session_id: str) -> APIResponse:
     logger.info("Session %s ended | questions=%d", session_id, len(session.questions_asked))
 
     return APIResponse(data={"session_id": session_id, "status": "completed"})
+
+
+# 🔥 ADDED: Recording upload endpoint
+UPLOAD_DIR = Path("uploads")
+
+@router.post("/{session_id}/upload", response_model=APIResponse)
+async def upload_recording(
+    session_id: str,
+    video_file: UploadFile = File(...),
+) -> APIResponse:
+    """
+    Upload a video/audio recording for an interview session.
+    Files are stored on local disk; only the URL is kept in session state.
+    """
+    session = await redis_store.get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    # Create directory for this session
+    session_dir = UPLOAD_DIR / session_id
+    session_dir.mkdir(parents=True, exist_ok=True)
+
+    # Generate unique filename
+    ext = Path(video_file.filename or "recording.webm").suffix or ".webm"
+    filename = f"{uuid.uuid4().hex[:12]}{ext}"
+    file_path = session_dir / filename
+
+    # Stream file to disk (not into memory/database)
+    content = await video_file.read()
+    if not content:
+        raise HTTPException(status_code=400, detail="Empty file uploaded")
+
+    file_path.write_bytes(content)
+    logger.info(
+        "Recording saved for session %s | file=%s size=%d bytes",
+        session_id, filename, len(content),
+    )
+
+    # Return the URL path (served by StaticFiles mount)
+    video_url = f"/uploads/{session_id}/{filename}"
+
+    return APIResponse(data={
+        "video_url": video_url,
+        "filename": filename,
+        "size_bytes": len(content),
+    })
