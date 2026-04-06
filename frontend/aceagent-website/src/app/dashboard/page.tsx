@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import DashboardSidebar from './DashboardSidebar';
 import DashboardHeader from './DashboardHeader';
@@ -15,14 +15,48 @@ import PracticeDuration from './PracticeDuration';
 export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const isMob = width < 768;
+      const isTab = width >= 768 && width < 1200;
+      
+      setIsMobile(isMob);
+      setIsTablet(isTab);
+      
+      if (isMob || isTab) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const gridTemplateColumns = isMobile
+    ? '1fr'
+    : isTablet
+    ? '1fr 1fr'
+    : '1fr 300px 280px';
+
+  const secondaryGridColumns = isMobile
+    ? '1fr'
+    : isTablet
+    ? '1fr 1fr'
+    : '1fr 300px 240px';
 
   return (
     <div
       style={{
         display: 'flex',
-        height: '100vh',
+        minHeight: '100vh',
         width: '100vw',
-        overflow: 'hidden',
         background: darkMode ? '#0d1117' : '#f0f4f0',
         fontFamily: "'Space Grotesk', sans-serif",
         transition: 'background 0.3s',
@@ -30,6 +64,7 @@ export default function DashboardPage() {
     >
       <DashboardSidebar
         collapsed={sidebarCollapsed}
+        isMobile={isMobile}
         onToggle={() => setSidebarCollapsed((prev) => !prev)}
         dark={darkMode}
       />
@@ -39,29 +74,28 @@ export default function DashboardPage() {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden',
           minWidth: 0,
         }}
       >
         <DashboardHeader
           dark={darkMode}
+          isMobile={isMobile}
           onToggleDark={() => setDarkMode((prev) => !prev)}
+          onToggleSidebar={() => setSidebarCollapsed((prev) => !prev)}
         />
 
         <div
           style={{
             flex: 1,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            padding: '28px 28px 40px',
+            padding: isMobile ? '20px 16px' : '28px 28px 40px',
             background: darkMode ? '#0d1117' : '#f0f4f0',
             transition: 'background 0.3s',
           }}
         >
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 24, textAlign: isMobile ? 'center' : 'left' }}>
             <h1
               style={{
-                fontSize: 32,
+                fontSize: isMobile ? 26 : 32,
                 fontWeight: 800,
                 color: darkMode ? '#f1f5f9' : '#0f172a',
                 margin: 0,
@@ -87,7 +121,7 @@ export default function DashboardPage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 280px 260px',
+              gridTemplateColumns: gridTemplateColumns,
               gap: 20,
               marginTop: 20,
             }}
@@ -100,7 +134,7 @@ export default function DashboardPage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 280px 220px',
+              gridTemplateColumns: secondaryGridColumns,
               gap: 20,
               marginTop: 20,
             }}
@@ -113,4 +147,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-}
+}

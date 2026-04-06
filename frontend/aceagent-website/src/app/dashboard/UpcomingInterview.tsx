@@ -1,15 +1,34 @@
-'use client';
-
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Video, Clock } from 'lucide-react';
+import { Video, Clock, Loader2 } from 'lucide-react';
+import { startInterview } from '@/lib/api';
 
 interface Props { dark: boolean; }
 
 export default function UpcomingInterview({ dark }: Props) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  
   const bg     = dark ? '#161b27' : '#fff';
   const border = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)';
   const text   = dark ? '#f1f5f9' : '#0f172a';
   const sub    = dark ? '#64748b' : '#9ca3af';
+
+  const handleJoin = async () => {
+    setLoading(true);
+    try {
+      // Starting a mock session for the upcoming interview
+      const response = await startInterview('System Design', 'hard');
+      if (response.data?.session_id) {
+        router.push(`/interview/${response.data.session_id}`);
+      }
+    } catch (err) {
+      console.error('Failed to join:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <motion.div
@@ -94,8 +113,10 @@ export default function UpcomingInterview({ dark }: Props) {
       </div>
 
       <motion.button
-        whileHover={{ scale: 1.03, filter: 'brightness(1.08)' }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={!loading ? { scale: 1.03, filter: 'brightness(1.08)' } : {}}
+        whileTap={!loading ? { scale: 0.97 } : {}}
+        onClick={handleJoin}
+        disabled={loading}
         style={{
           width:          '100%',
           padding:        '13px 0',
@@ -105,18 +126,25 @@ export default function UpcomingInterview({ dark }: Props) {
           color:          '#fff',
           fontSize:       14,
           fontWeight:     700,
-          cursor:         'pointer',
+          cursor:         loading ? 'not-allowed' : 'pointer',
           fontFamily:     'inherit',
           display:        'flex',
           alignItems:     'center',
           justifyContent: 'center',
           gap:            8,
           boxShadow:      '0 4px 16px rgba(22,163,74,0.4)',
+          opacity:        loading ? 0.8 : 1,
         }}
       >
-        <Video size={15} />
-        Join Room
+        {loading ? (
+          <Loader2 size={15} className="animate-spin" />
+        ) : (
+          <>
+            <Video size={15} />
+            Join Room
+          </>
+        )}
       </motion.button>
     </motion.div>
   );
-}
+}
