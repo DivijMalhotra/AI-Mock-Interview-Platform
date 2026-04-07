@@ -200,6 +200,11 @@ export default function LoginPage() {
               socialButtonsBlockButton__hover: {
                 borderColor: 'rgba(124,58,237,0.5)',
               },
+              badge: {
+                background: 'rgba(124,58,237,0.2)',
+                color: '#e2e8f0',
+                border: '1px solid rgba(124,58,237,0.3)',
+              },
               dividerLine: {
                 background: 'rgba(255,255,255,0.07)',
               },

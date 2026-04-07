@@ -130,9 +130,9 @@ function AreaTooltip({ active, payload, label }: CustomTooltipProps) {
             background:   '#06b6d4',
           }}
         />
-        <span style={{ color: '#94a3b8', fontSize: 11 }}>Revenue:</span>
+        <span style={{ color: '#94a3b8', fontSize: 11 }}>Value Shared:</span>
         <span className="value" style={{ fontSize: 12 }}>
-          ${String(payload[0].value)}K
+          ₹{String(payload[0].value)}K
         </span>
       </div>
     </div>
@@ -143,38 +143,38 @@ function AreaTooltip({ active, payload, label }: CustomTooltipProps) {
 const FEATURES = [
   {
     icon:  Shield,
-    title: 'Security',
-    desc:  'Enterprise-level security ensuring absolute protection of your critical platform.',
+    title: 'Fraud Detection',
+    desc:  'AI monitoring detects multiple faces, unauthorized audio, and tab-switching during interviews.',
     color: '#7c3aed',
   },
   {
     icon:  Link2,
-    title: 'Integration with ATS',
-    desc:  'Adapt links within ATS systems with 0% syndicate overhead and seamless connectivity.',
+    title: 'ATS Integration',
+    desc:  'Seamlessly link candidate performance data directly into your applicant tracking system.',
     color: '#06b6d4',
   },
   {
     icon:  Users,
-    title: 'Multi-user team',
-    desc:  'Techniques team behaviors throughout an autonomous platform at scale.',
+    title: 'Batch Assessments',
+    desc:  'Assess hundreds of students or candidates concurrently without breaking a sweat.',
     color: '#10b981',
   },
   {
     icon:  Zap,
-    title: 'Coloni Integration',
-    desc:  'Enterprise real item on client authorized database. All dimensions explain.',
+    title: 'Instant Reports',
+    desc:  'Generate comprehensive breakdowns of behavioral and technical skills instantly after the session.',
     color: '#f59e0b',
   },
   {
     icon:  Lock,
-    title: 'Security',
-    desc:  'Teamwork schedule outline a begin aut enterprise real find ideas OKI systems.',
+    title: 'Data Privacy',
+    desc:  'Complete enterprise compliance. Your candidates video, audio, and transcript data are fully encrypted.',
     color: '#ec4899',
   },
   {
     icon:  UsersRound,
-    title: 'Multi user team',
-    desc:  'Short-time have techniques team behaviors throughout to autonomous.',
+    title: 'Custom Roles',
+    desc:  'Configure specific interview personas and difficulties tailored to your organization.',
     color: '#a78bfa',
   },
 ];
@@ -198,7 +198,7 @@ function BarChartCard() {
           marginBottom: 16,
         }}
       >
-        Simular huis
+        Interview Volume
       </div>
       <ResponsiveContainer width="100%" height={130}>
         <BarChart
@@ -260,10 +260,10 @@ function StatsCard() {
         }}
       >
         {[
-          { l: 'Active',  v: '2.4K', c: '#7c3aed' },
-          { l: 'Revenue', v: '$98K', c: '#10b981'  },
-          { l: 'Growth',  v: '+34%', c: '#06b6d4'  },
-          { l: 'Score',   v: '9.8',  c: '#f59e0b'  },
+          { l: 'Candidates',  v: '2.4K', c: '#7c3aed' },
+          { l: 'Saved', v: '₹98K', c: '#10b981'  },
+          { l: 'Placement',  v: '+34%', c: '#06b6d4'  },
+          { l: 'Avg Score',   v: '9.8',  c: '#f59e0b'  },
         ].map((s) => (
           <div
             key={s.l}
@@ -309,7 +309,7 @@ function AreaChartCard() {
           marginBottom: 16,
         }}
       >
-        Forbosnous unayfive
+        Candidate Growth Trajectory
       </div>
       <ResponsiveContainer width="100%" height={130}>
         <AreaChart
@@ -376,7 +376,7 @@ function CTACard() {
           marginBottom: 8,
         }}
       >
-        REQUEST ENTERPRISE DEMO
+        FOR UNIVERSITIES & BOOTCAMPS
       </div>
       <p
         style={{
@@ -386,11 +386,11 @@ function CTACard() {
           marginBottom: 16,
         }}
       >
-        Seamless transition to full enterprise status with advanced features
+        Scale your mock interviews across your entire student base with advanced features
         and dedicated support.
       </p>
       <Button variant="primary" style={{ width: '100%' }}>
-        Start A Enterprise Demo
+        Request Institutional Demo
       </Button>
     </div>
   );
@@ -475,7 +475,7 @@ export default function AgencySection() {
               textTransform: 'uppercase',
             }}
           >
-            Agency & Platform Solutions
+            Institutional & Platform Solutions
           </div>
 
           <h2
@@ -488,7 +488,7 @@ export default function AgencySection() {
               margin:     0,
             }}
           >
-            AGENCY & PLATFORM SOLUTIONS
+            INSTITUTIONAL & PLATFORM SOLUTIONS
           </h2>
         </motion.div>
 

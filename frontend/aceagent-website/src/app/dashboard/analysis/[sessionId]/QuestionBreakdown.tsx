@@ -62,8 +62,10 @@ export default function QuestionBreakdown({ questions, dark }: Props) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {questions.map((q, i) => {
           const isOpen = openIdx === i;
-          const scoreColor =
-            q.score >= 75 ? '#22c55e' : q.score >= 50 ? '#f59e0b' : '#ef4444';
+          const isSkipped = q.transcript === "Skipped by user.";
+          const scoreColor = isSkipped 
+             ? '#64748b' 
+             : (q.score >= 75 ? '#22c55e' : q.score >= 50 ? '#f59e0b' : '#ef4444');
 
           return (
             <motion.div
@@ -76,6 +78,7 @@ export default function QuestionBreakdown({ questions, dark }: Props) {
                 border: `1px solid ${dark ? 'rgba(124,58,237,0.08)' : 'rgba(0,0,0,0.06)'}`,
                 borderRadius: 14,
                 overflow: 'hidden',
+                opacity: isSkipped ? 0.7 : 1,
               }}
             >
               {/* Header — always visible */}
@@ -133,14 +136,15 @@ export default function QuestionBreakdown({ questions, dark }: Props) {
                 {/* Score */}
                 <span
                   style={{
-                    fontSize: 14,
+                    fontSize: isSkipped ? 11 : 14,
                     fontWeight: 800,
                     color: scoreColor,
-                    fontFamily: "'Orbitron', sans-serif",
+                    fontFamily: isSkipped ? 'inherit' : "'Orbitron', sans-serif",
                     flexShrink: 0,
+                    letterSpacing: isSkipped ? 1 : 0,
                   }}
                 >
-                  {Math.round(q.score)}
+                  {isSkipped ? "SKIPPED" : Math.round(q.score)}
                 </span>
 
                 {/* Chevron */}
@@ -169,27 +173,29 @@ export default function QuestionBreakdown({ questions, dark }: Props) {
                       }}
                     >
                       {/* Score bar */}
-                      <div style={{ margin: '14px 0' }}>
-                        <div
-                          style={{
-                            height: 6,
-                            background: dark ? 'rgba(124,58,237,0.08)' : 'rgba(0,0,0,0.06)',
-                            borderRadius: 99,
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${q.score}%` }}
-                            transition={{ duration: 0.6 }}
+                      {!isSkipped && (
+                        <div style={{ margin: '14px 0' }}>
+                          <div
                             style={{
-                              height: '100%',
-                              background: scoreColor,
+                              height: 6,
+                              background: dark ? 'rgba(124,58,237,0.08)' : 'rgba(0,0,0,0.06)',
                               borderRadius: 99,
+                              overflow: 'hidden',
                             }}
-                          />
+                          >
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${q.score}%` }}
+                              transition={{ duration: 0.6 }}
+                              style={{
+                                height: '100%',
+                                background: scoreColor,
+                                borderRadius: 99,
+                              }}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Feedback */}
                       <div

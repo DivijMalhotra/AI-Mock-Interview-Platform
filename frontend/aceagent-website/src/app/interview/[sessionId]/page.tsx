@@ -170,10 +170,9 @@ export default function InterviewPage() {
               lineHeight: 1.1,
             }}
           >
-            AI-Cognitive{" "}
-            <span className="gradient-text-purple">Baseline Check</span>
+            LIVE <span className="gradient-text-purple">INTERVIEW</span>
           </motion.h1>
-          <p style={{ color: "#64748b", fontSize: 14, marginTop: 6, marginBottom: 0 }}>
+          <p className="hidden" style={{ color: "#64748b", fontSize: 14, marginTop: 6, marginBottom: 0 }}>
             Phase 1: Neural Signature Calibration
           </p>
         </div>

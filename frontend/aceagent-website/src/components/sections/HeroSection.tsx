@@ -57,29 +57,29 @@ function Particles() {
 const FEATURES = [
   {
     n: '01',
-    title: 'TEAMLESS COLLABORATION',
-    desc: 'To achieve up to 10x symbol on 10% ownership.',
+    title: 'REAL-TIME ANALYSIS',
+    desc: 'Get instant, AI-driven insights on your behavioral and technical performance during mock interviews.',
     bg: 'rgba(124,58,237,0.12)',
     border: 'rgba(124,58,237,0.35)',
   },
   {
     n: '02',
-    title: 'PROFESSIONAL INFRASTRUCTURE',
-    desc: 'Enterprise grade performance and powerful benefits.',
+    title: 'DYNAMIC EVALUATION',
+    desc: 'Leverages state-of-the-art vision and speech models to continuously assess deep technical metrics.',
     bg: 'rgba(37,99,235,0.12)',
     border: 'rgba(37,99,235,0.35)',
   },
   {
     n: '03',
-    title: 'CUSTOMIZABLE WORKSPACE',
-    desc: 'Adapt different roles and user integrations with control.',
+    title: 'ADAPTIVE DIFFICULTY',
+    desc: 'Our cognitive engine adjusts questioning in real-time, tailoring follow-ups directly to your skill baseline.',
     bg: 'rgba(6,182,212,0.12)',
     border: 'rgba(6,182,212,0.35)',
   },
   {
     n: '04',
-    title: 'FUTURE-PROOF TECHNOLOGY',
-    desc: 'Built on scalable, secure blockchain infrastructure.',
+    title: 'INTEGRITY MONITORING',
+    desc: 'Secure AI tracking to detect environment violations, ensuring highly reliable assessments without bias.',
     bg: 'rgba(99,102,241,0.12)',
     border: 'rgba(99,102,241,0.35)',
   },
@@ -255,7 +255,7 @@ export default function HeroSection() {
                 }}
               />
               <span style={{ color: '#c084fc', fontSize: 12, fontWeight: 500 }}>
-                AI-Powered Platform
+                AI Mock Interview Platform
               </span>
             </div>
 
@@ -272,9 +272,9 @@ export default function HeroSection() {
             >
               MASTER YOUR
               <br />
-              PATH WITH
+              INTERVIEWS WITH
               <br />
-              <span className="gradient-text-purple">AGENTIC AI</span>
+              <span className="gradient-text-purple">ACE AGENT</span>
             </h1>
 
             <p
@@ -286,9 +286,7 @@ export default function HeroSection() {
                 margin: 0,
               }}
             >
-              Practice, feedback, and holistic skill validation, all on one
-              autonomous platform. Your AI agent works tirelessly so you can
-              focus on growth.
+              Practice your technical and behavioral skills with a realistic AI interviewer. Get instant feedback on your answers so you can land your dream job with confidence.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -302,9 +300,9 @@ export default function HeroSection() {
 
             <div style={{ display: 'flex', gap: 36, paddingTop: 8 }}>
               {[
-                { v: '10K+', l: 'Active Users' },
-                { v: '98%', l: 'Satisfaction' },
-                { v: '24/7', l: 'AI Support' },
+                { v: '10K+', l: 'Interviews Taken' },
+                { v: '98%', l: 'Success Rate' },
+                { v: '24/7', l: 'Availability' },
               ].map((s) => (
                 <div key={s.l}>
                   <div
@@ -473,7 +471,7 @@ export default function HeroSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          style={{ paddingBottom: 64 }}
+          style={{ paddingBottom: 64, marginTop: 48 }}
         >
           <div
             style={{

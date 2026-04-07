@@ -36,14 +36,22 @@ def _build_analysis(session: SessionState) -> dict:
         else:
             evaluations.append(dict(e) if hasattr(e, "__iter__") else {})
 
+    valid_eval_indices = [
+        i for i, ans in enumerate(session.answers)
+        if ans.get("transcript", "") != "Skipped by user."
+    ]
+    # If all skipped, still use everything to avoid div by zero issues, or just empty
+    valid_evaluations = [evaluations[i] for i in valid_eval_indices] if valid_eval_indices else evaluations
+    confidence_scores = session.confidence_scores or []
+    valid_confidences = [confidence_scores[i] for i in valid_eval_indices if i < len(confidence_scores)] if valid_eval_indices else confidence_scores
+
     # ── Compute aggregate scores ──
-    eval_scores = [e.get("score", 5.0) for e in evaluations]
+    eval_scores = [e.get("score", 5.0) for e in valid_evaluations]
     avg_eval = sum(eval_scores) / len(eval_scores) if eval_scores else 5.0
 
-    confidence_scores = session.confidence_scores or []
     avg_confidence_raw = (
-        sum(c.get("overall", 0.5) for c in confidence_scores) / len(confidence_scores)
-        if confidence_scores
+        sum(c.get("overall", 0.5) for c in valid_confidences) / len(valid_confidences)
+        if valid_confidences
         else 0.5
     )
 
@@ -61,8 +69,8 @@ def _build_analysis(session: SessionState) -> dict:
 
     # ── Emotion analysis (derived from confidence breakdowns) ──
     avg_expression = 0.5
-    if confidence_scores:
-        expressions = [c.get("breakdown", {}).get("facial_expression", 0.5) for c in confidence_scores]
+    if valid_confidences:
+        expressions = [c.get("breakdown", {}).get("facial_expression", 0.5) for c in valid_confidences]
         avg_expression = sum(expressions) / len(expressions)
 
     emotion_analysis = {
@@ -73,12 +81,12 @@ def _build_analysis(session: SessionState) -> dict:
 
     # ── Speech metrics ──
     filler_ratios = []
-    if confidence_scores:
-        filler_ratios = [c.get("breakdown", {}).get("filler_word_ratio", 0.1) for c in confidence_scores]
+    if valid_confidences:
+        filler_ratios = [c.get("breakdown", {}).get("filler_word_ratio", 0.1) for c in valid_confidences]
     avg_filler = sum(filler_ratios) / len(filler_ratios) if filler_ratios else 0.1
     avg_pace = 0.5
-    if confidence_scores:
-        paces = [c.get("breakdown", {}).get("speech_pace", 0.5) for c in confidence_scores]
+    if valid_confidences:
+        paces = [c.get("breakdown", {}).get("speech_pace", 0.5) for c in valid_confidences]
         avg_pace = sum(paces) / len(paces)
 
     speech_metrics = {
@@ -90,7 +98,7 @@ def _build_analysis(session: SessionState) -> dict:
     # ── Content analysis ──
     all_strengths: list[str] = []
     all_weaknesses: list[str] = []
-    for e in evaluations:
+    for e in valid_evaluations:
         all_strengths.extend(e.get("strengths", []))
         all_weaknesses.extend(e.get("weaknesses", []))
     unique_strengths = list(set(all_strengths))[:6]
@@ -102,8 +110,8 @@ def _build_analysis(session: SessionState) -> dict:
 
     # ── Gesture analysis ──
     avg_eye = 0.5
-    if confidence_scores:
-        eyes = [c.get("breakdown", {}).get("eye_contact", 0.5) for c in confidence_scores]
+    if valid_confidences:
+        eyes = [c.get("breakdown", {}).get("eye_contact", 0.5) for c in valid_confidences]
         avg_eye = sum(eyes) / len(eyes)
 
     gesture_analysis = {
@@ -113,7 +121,7 @@ def _build_analysis(session: SessionState) -> dict:
 
     # ── Feedback ──
     feedback: list[str] = []
-    for e in evaluations:
+    for e in valid_evaluations:
         if e.get("suggestion"):
             feedback.append(e["suggestion"])
     if not feedback:
@@ -128,13 +136,15 @@ def _build_analysis(session: SessionState) -> dict:
     for i, q_data in enumerate(session.questions_asked):
         q_eval = evaluations[i] if i < len(evaluations) else {}
         q_answer = session.answers[i] if i < len(session.answers) else {}
+        is_skipped = q_answer.get("transcript", "") == "Skipped by user."
+        
         question_wise.append({
             "question": q_data.get("text", f"Question {i + 1}"),
-            "score": round(q_eval.get("score", 5.0) * 10, 1),
-            "feedback": q_eval.get("suggestion", "No specific feedback available"),
+            "score": round(q_eval.get("score", 5.0) * 10, 1) if not is_skipped else 0.0,
+            "feedback": q_eval.get("suggestion", "No specific feedback available") if not is_skipped else "Question was skipped by the user.",
             "transcript": q_answer.get("transcript", ""),
-            "strengths": q_eval.get("strengths", []),
-            "weaknesses": q_eval.get("weaknesses", []),
+            "strengths": q_eval.get("strengths", []) if not is_skipped else [],
+            "weaknesses": q_eval.get("weaknesses", []) if not is_skipped else [],
         })
 
     # ── Full transcripts list ──

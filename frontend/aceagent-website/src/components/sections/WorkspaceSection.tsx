@@ -84,7 +84,7 @@ function MiniDashboard() {
           ))}
         </div>
         <span style={{ color: '#475569', fontSize: 11, flex: 1, textAlign: 'center' }}>
-          Tomorrow Atlas — Dashboard
+          AceAgent — Analysis Dashboard
         </span>
       </div>
 
@@ -142,10 +142,10 @@ function MiniDashboard() {
             }}
           >
             {[
-              { l: 'Team',  v: '04:21:36', c: '#7c3aed' },
-              { l: 'Done',  v: '28/31',    c: '#10b981' },
-              { l: 'Score', v: '94%',      c: '#f59e0b' },
-              { l: 'Users', v: '127',      c: '#06b6d4' },
+              { l: 'Total',  v: '12 Ses', c: '#7c3aed' },
+              { l: 'Time',  v: '04:21h',    c: '#10b981' },
+              { l: 'Avg', v: '87%',      c: '#f59e0b' },
+              { l: 'Pass', v: '9/12',      c: '#06b6d4' },
             ].map((s, i) => (
               <div
                 key={i}
@@ -227,9 +227,9 @@ function MiniDashboard() {
                       content={<DashTooltip />}
                       cursor={{ fill: 'rgba(124,58,237,0.05)' }}
                     />
-                    <Bar dataKey="ui"   name="UI"   fill="#7c3aed" radius={[2, 2, 0, 0]} />
-                    <Bar dataKey="api"  name="API"  fill="#06b6d4" radius={[2, 2, 0, 0]} />
-                    <Bar dataKey="test" name="Test" fill="#10b981" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="ui"   name="Tech"   fill="#7c3aed" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="api"  name="Behavior"  fill="#06b6d4" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="test" name="Confidence" fill="#10b981" radius={[2, 2, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -249,7 +249,7 @@ function MiniDashboard() {
               }}
             >
               <div style={{ color: '#475569', fontSize: 9, fontWeight: 600 }}>
-                Progress
+                Score
               </div>
               <div style={{ position: 'relative', width: 58, height: 58 }}>
                 <svg
@@ -301,7 +301,7 @@ function MiniDashboard() {
                     fontWeight: 700,
                   }}
                 >
-                  77%
+                  87%
                 </div>
               </div>
             </div>
@@ -324,12 +324,12 @@ function MiniDashboard() {
                 marginBottom: 7,
               }}
             >
-              Active Tasks
+              Mastery Levels
             </div>
             {[
-              { t: 'UI Implementation', p: 85, c: '#7c3aed' },
-              { t: 'API Integration',   p: 60, c: '#06b6d4' },
-              { t: 'Testing Suite',     p: 40, c: '#10b981' },
+              { t: 'System Design', p: 85, c: '#7c3aed' },
+              { t: 'Behavioral STAR',   p: 60, c: '#06b6d4' },
+              { t: 'Pacing & Tone',     p: 40, c: '#10b981' },
             ].map((item, i) => (
               <div
                 key={i}
@@ -435,7 +435,7 @@ export default function WorkspaceSection() {
                   marginBottom: 3,
                 }}
               >
-                DEEP FEEDBACK &
+                COMPREHENSIVE
               </div>
               <div
                 style={{
@@ -446,12 +446,10 @@ export default function WorkspaceSection() {
                   marginBottom: 14,
                 }}
               >
-                SKILL CREATION
+                SESSION ANALYSIS
               </div>
               <p style={{ color: '#64748b', fontSize: 12, lineHeight: 1.75 }}>
-                Bring your performance farther, harness interconnected results
-                from Alanine sontact. Track every milestone with intelligent
-                analytics.
+                Review your behavioral and technical performance with deep, interconnected data. Track your progress across multiple sessions to master the interview.
               </p>
               <div
                 style={{
@@ -532,21 +530,20 @@ export default function WorkspaceSection() {
                 margin: 0,
               }}
             >
-              CUSTOMIZABLE
+              INTELLIGENT
               <br />
-              <span className="gradient-text">WORKSPACE:</span>
+              <span className="gradient-text">DASHBOARD:</span>
             </h2>
-            <p
-              style={{
-                color: '#64748b',
-                fontSize: 13,
-                lineHeight: 1.7,
-                marginTop: 14,
-              }}
-            >
-              Adapt differently. Tailor colors within your integrations, edith
-              dialscrolled onearcontrol tools.
-            </p>
+              <p
+                style={{
+                  color: '#64748b',
+                  fontSize: 13,
+                  lineHeight: 1.7,
+                  marginTop: 14,
+                }}
+              >
+                Review all your past interviews. Access detailed reports on communication, confidence, and specific domain accuracy.
+              </p>
           </motion.div>
 
           {/* Right code */}
@@ -573,12 +570,12 @@ export default function WorkspaceSection() {
                 ))}
               </div>
               {[
-                { c: '#a78bfa', t: 'const agent = new AceAgent({' },
-                { c: '#06b6d4', t: '  model: "gpt-4",' },
-                { c: '#10b981', t: '  workspace: "custom",' },
-                { c: '#f59e0b', t: '  integrations: [...],' },
-                { c: '#ec4899', t: '  tools: ["search",' },
-                { c: '#a78bfa', t: '    "analytics", "ai"]' },
+                { c: '#a78bfa', t: 'const session = new AceAgent({' },
+                { c: '#06b6d4', t: '  role: "Software Engineer",' },
+                { c: '#10b981', t: '  level: "Senior",' },
+                { c: '#f59e0b', t: '  integrity: true,' },
+                { c: '#ec4899', t: '  capabilities: ["vision",' },
+                { c: '#a78bfa', t: '    "audio", "code"]' },
                 { c: '#7c3aed', t: '});' },
               ].map((l, i) => (
                 <div key={i} style={{ color: l.c, fontSize: 11, lineHeight: 1.9 }}>

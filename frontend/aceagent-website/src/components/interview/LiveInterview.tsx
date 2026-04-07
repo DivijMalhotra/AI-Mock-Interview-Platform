@@ -101,11 +101,11 @@ const ALERT_CONFIG: Record<string, { icon: React.ReactNode; label: string; color
 function getGazeDisplay(direction: string): { label: string; color: string } {
   switch (direction) {
     case "center": return { label: "Centered", color: "text-cyan-400" };
-    case "left":   return { label: "Left", color: "text-amber-400" };
-    case "right":  return { label: "Right", color: "text-amber-400" };
-    case "up":     return { label: "Up", color: "text-amber-400" };
-    case "down":   return { label: "Down", color: "text-amber-400" };
-    default:       return { label: "Unknown", color: "text-gray-400" };
+    case "left": return { label: "Left", color: "text-amber-400" };
+    case "right": return { label: "Right", color: "text-amber-400" };
+    case "up": return { label: "Up", color: "text-amber-400" };
+    case "down": return { label: "Down", color: "text-amber-400" };
+    default: return { label: "Unknown", color: "text-gray-400" };
   }
 }
 
@@ -246,13 +246,12 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
             <Loader2 className="w-16 h-16 text-violet-500 animate-spin" />
           )}
           <div
-            className={`absolute inset-0 ${
-              status === "redirecting"
+            className={`absolute inset-0 ${status === "redirecting"
                 ? cheatingDetected
                   ? "bg-red-500/20"
                   : "bg-emerald-500/20"
                 : "bg-violet-500/20"
-            } blur-xl rounded-full`}
+              } blur-xl rounded-full`}
           />
         </div>
         <p className="text-xl font-bold tracking-tight mb-2">
@@ -468,17 +467,15 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
               {/* Mic */}
               <button
                 onClick={toggleMic}
-                className={`p-3.5 backdrop-blur-2xl border rounded-xl transition-all group ${
-                  isListening
+                className={`p-3.5 backdrop-blur-2xl border rounded-xl transition-all group ${isListening
                     ? "bg-red-500/20 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)] animate-pulse"
                     : "bg-black/60 hover:bg-violet-600/20 border-white/10 hover:border-violet-500/40"
-                }`}
+                  }`}
                 title={isListening ? "Stop Dictation" : "Start Dictation"}
               >
                 <Mic
-                  className={`${
-                    isListening ? "text-red-400" : "text-white"
-                  } group-hover:scale-110 transition-transform`}
+                  className={`${isListening ? "text-red-400" : "text-white"
+                    } group-hover:scale-110 transition-transform`}
                   size={20}
                 />
               </button>
@@ -529,12 +526,13 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
               {/* End Session */}
               <button
                 onClick={() => setShowEndConfirm(true)}
-                className="px-6 py-3 bg-red-500/80 hover:bg-red-500 backdrop-blur-2xl border border-red-400/30 rounded-xl transition-all text-white text-xs font-bold tracking-wide"
+                className="px-5 py-2.5 bg-black/60 hover:bg-red-500/20 backdrop-blur-2xl border border-white/10 hover:border-red-500/40 rounded-xl transition-all group"
+                title="End Session"
               >
-                <div className="flex items-center gap-2">
-                  <LogOut size={14} />
-                  End Session
-                </div>
+                <LogOut
+                  className="text-white group-hover:text-red-400 transition-colors"
+                  size={20}
+                />
               </button>
             </div>
           </div>
@@ -551,21 +549,18 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                 </span>
               </div>
               <div
-                className={`flex items-center gap-2 px-3 py-1 rounded-lg border ${
-                  integrityCalibrated
+                className={`flex items-center gap-2 px-3 py-1 rounded-lg border ${integrityCalibrated
                     ? "bg-emerald-500/10 border-emerald-500/20"
                     : "bg-amber-500/10 border-amber-500/20"
-                }`}
+                  }`}
               >
                 <div
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    integrityCalibrated ? "bg-emerald-500" : "bg-amber-500 animate-pulse"
-                  }`}
+                  className={`w-1.5 h-1.5 rounded-full ${integrityCalibrated ? "bg-emerald-500" : "bg-amber-500 animate-pulse"
+                    }`}
                 />
                 <span
-                  className={`text-[9px] font-black uppercase tracking-wider ${
-                    integrityCalibrated ? "text-emerald-400" : "text-amber-400"
-                  }`}
+                  className={`text-[9px] font-black uppercase tracking-wider ${integrityCalibrated ? "text-emerald-400" : "text-amber-400"
+                    }`}
                 >
                   {integrityCalibrated ? "Calibrated" : "Calibrating..."}
                 </span>
@@ -620,11 +615,10 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                   Blinks
                 </span>
                 <span
-                  className={`text-xs font-black ${
-                    blinkRate > 40 || blinkRate < 5
+                  className={`text-xs font-black ${blinkRate > 40 || blinkRate < 5
                       ? "text-amber-400"
                       : "text-violet-400"
-                  }`}
+                    }`}
                 >
                   {Math.round(blinkRate)}{" "}
                   <span className="text-[8px] font-bold text-gray-500">bpm</span>
@@ -638,13 +632,12 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                 </span>
                 <div className="flex items-center gap-1.5">
                   <span
-                    className={`text-xs font-black ${
-                      faceCount > 1
+                    className={`text-xs font-black ${faceCount > 1
                         ? "text-red-400"
                         : faceCount === 1
-                        ? "text-cyan-400"
-                        : "text-gray-500"
-                    }`}
+                          ? "text-cyan-400"
+                          : "text-gray-500"
+                      }`}
                   >
                     {faceCount}
                   </span>
@@ -665,9 +658,8 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                   Alerts
                 </span>
                 <span
-                  className={`text-xs font-black ${
-                    multiViolationCount > 0 ? "text-red-400" : "text-emerald-400"
-                  }`}
+                  className={`text-xs font-black ${multiViolationCount > 0 ? "text-red-400" : "text-emerald-400"
+                    }`}
                 >
                   {multiViolationCount}/3
                 </span>
@@ -717,8 +709,8 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
             </AnimatePresence>
           </div>
 
-          {/* COGNITIVE VECTOR OUTPUT */}
-          <div className="bg-[#0c1032] p-5 rounded-2xl border border-[rgba(124,58,237,0.12)] flex items-start gap-4 relative">
+          {/* COGNITIVE VECTOR OUTPUT (HIDDEN as requested) */}
+          <div className="hidden bg-[#0c1032] p-5 rounded-2xl border border-[rgba(124,58,237,0.12)] items-start gap-4 relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
@@ -744,7 +736,7 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              className="bg-[#0c1032] backdrop-blur-3xl p-8 rounded-2xl border border-[rgba(124,58,237,0.12)] shadow-2xl relative"
+              className="bg-[#0c1032] backdrop-blur-3xl p-8 rounded-xl border border-[rgba(124,58,237,0.12)] shadow-2xl relative"
             >
               {/* AMBIENT HUD ACCENTS */}
               <div className="absolute top-0 right-0 w-48 h-48 bg-violet-600/5 blur-[100px] rounded-full" />
@@ -755,11 +747,11 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                     <BrainCircuit className="text-violet-400" size={24} />
                   </div>
                   <div>
-                    <span className="block text-[10px] font-black uppercase tracking-[0.3em] text-violet-500 mb-1">
-                      Module_Prompt_v3
+                    <span className="block text-[12px] font-black uppercase tracking-[0.3em] text-violet-500 mb-1">
+                      QUESTION
                     </span>
-                    <span className="block text-xs font-bold text-gray-500">
-                      REF_TOKEN: {sessionId.substring(24)}
+                    <span className="hidden text-xs font-bold text-gray-500">
+                      REF_TOKEN: {sessionId.slice(-8).toUpperCase() || "UNKNOWN"}
                     </span>
                   </div>
                 </div>
@@ -816,7 +808,7 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
           </AnimatePresence>
 
           {/* UPCOMING TASK */}
-          <div className="bg-[#0c1032] p-4 rounded-2xl border border-[rgba(124,58,237,0.12)] flex items-center gap-4">
+          <div className="bg-[#0c1032] p-4 rounded-2xl border border-[rgba(124,58,237,0.12)] flex items-center gap-4 hover:border-violet-500/30 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center border border-violet-500/20">
               <BrainCircuit className="text-violet-400" size={20} />
             </div>
@@ -824,8 +816,8 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
               <span className="block text-[9px] font-black uppercase tracking-widest text-gray-500 mb-0.5">
                 Upcoming Task
               </span>
-              <span className="text-sm font-bold text-white">
-                Logic Reasoning Phase
+              <span className="text-sm font-bold text-white capitalize">
+                {currentQuestion?.topic ? `${currentQuestion.topic.replace(/_/g, ' ')} Phase` : "Evaluation Phase"}
               </span>
             </div>
             <ChevronRight size={18} className="text-gray-500" />
@@ -839,7 +831,7 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                 onChange={(e) => setUserAnswer(e.target.value)}
                 placeholder="Synthesize your technical vector here..."
                 disabled={isEvaluating}
-                className="w-full bg-[#050816] backdrop-blur-2xl border border-[rgba(139,92,246,0.1)] rounded-2xl p-6 text-gray-100 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/40 focus:ring-4 focus:ring-violet-500/[0.05] min-h-[160px] resize-none transition-all disabled:opacity-40 disabled:scale-[0.98] font-medium text-sm leading-relaxed"
+                className="w-full bg-[#050816] backdrop-blur-2xl border border-[rgba(139,92,246,0.1)] rounded-[7px] px-8 py-7 text-gray-100 placeholder:text-gray-600 focus:outline-none focus:border-violet-500/40 focus:ring-4 focus:ring-violet-500/[0.05] min-h-[160px] resize-none transition-all disabled:opacity-40 disabled:scale-[0.98] font-medium text-lg leading-relaxed"
               />
 
               <AnimatePresence>
@@ -863,7 +855,24 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
             </div>
 
             {/* Action buttons row */}
-            <div className="flex gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {/* Skip Question */}
+              <button
+                onClick={() => {
+                  submitAnswer("Skipped by user.");
+                  setUserAnswer("");
+                  finalTranscriptRef.current = "";
+                }}
+                disabled={isEvaluating}
+                className="group flex-1 py-7 rounded-xl font-bold transition-all border border-slate-700 bg-slate-800 hover:bg-slate-700 text-white text-lg disabled:opacity-50 disabled:cursor-not-allowed hidden md:flex items-center justify-center gap-2 shadow-lg"
+                title="Skip this question and move to next"
+              >
+                <ChevronRight size={24} className="text-white transition-colors" />
+                <span className="uppercase tracking-[0.15em] text-base font-bold text-white">
+                  Skip
+                </span>
+              </button>
+
               {/* Submit Answer */}
               <button
                 onClick={() => {
@@ -872,24 +881,14 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                   finalTranscriptRef.current = "";
                 }}
                 disabled={!userAnswer.trim() || isEvaluating}
-                className="group relative flex-1 py-4 rounded-xl font-bold text-white transition-all overflow-hidden active:scale-[0.98] border border-violet-500/30 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #7c3aed, #6d28d9, #5b21b6)",
-                  boxShadow:
-                    "0 6px 24px rgba(124,58,237,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
-                }}
+                className="group relative flex-1 py-7 rounded-xl font-bold text-white transition-all overflow-hidden active:scale-[0.98] border border-violet-500 bg-violet-600 hover:bg-violet-500 text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(124,58,237,0.4)] hover:shadow-[0_0_25px_rgba(139,92,246,0.6)]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <div className="relative flex items-center justify-center gap-3">
-                  <Zap size={16} className="text-violet-200" />
-                  <span className="uppercase tracking-[0.2em] text-[13px] font-extrabold">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <div className="relative flex items-center justify-center gap-1">
+                  <Zap size={24} className="text-white transition-colors" />
+                  <span className="uppercase tracking-[0.2em] text-base font-bold text-white">
                     Transmit Response
                   </span>
-                  <ChevronRight
-                    size={16}
-                    className="group-hover:translate-x-1 transition-transform text-violet-200"
-                  />
                 </div>
               </button>
 
@@ -904,21 +903,32 @@ export default function LiveInterview({ sessionId }: { sessionId: string }) {
                   handleEndInterview();
                 }}
                 disabled={isEvaluating}
-                className="group py-4 px-5 rounded-xl font-bold text-white transition-all overflow-hidden active:scale-[0.98] border border-amber-500/30 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #d97706, #b45309, #92400e)",
-                  boxShadow:
-                    "0 6px 24px rgba(217,119,6,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
-                }}
+                className="group py-7 px-8 rounded-xl font-bold text-white transition-all overflow-hidden active:scale-[0.98] border border-red-500 bg-red-600 hover:bg-red-500 text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_20px_rgba(239,68,68,0.5)]"
                 title="Submit current answer and end interview"
               >
-                <div className="relative flex items-center justify-center gap-2">
-                  <Upload size={14} />
-                  <span className="uppercase tracking-[0.15em] text-[11px] font-extrabold">
+                <div className="relative flex items-center justify-center gap-3">
+                  <Upload size={22} className="text-white group-hover:-translate-y-0.5 transition-transform" />
+                  <span className="uppercase tracking-[0.15em] text-base font-bold text-white">
                     Submit & End
                   </span>
                 </div>
+              </button>
+
+              {/* Skip Question (Mobile Only View) */}
+              <button
+                onClick={() => {
+                  submitAnswer("Skipped by user.");
+                  setUserAnswer("");
+                  finalTranscriptRef.current = "";
+                }}
+                disabled={isEvaluating}
+                className="group flex-1 py-7 rounded-xl font-bold transition-all border border-slate-700 bg-slate-800 hover:bg-slate-700 text-white text-lg disabled:opacity-50 disabled:cursor-not-allowed md:hidden flex items-center justify-center gap-3 shadow-lg"
+                title="Skip this question and move to next"
+              >
+                <ChevronRight size={24} className="text-white transition-colors" />
+                <span className="uppercase tracking-[0.15em] text-base font-bold text-white">
+                  Skip
+                </span>
               </button>
             </div>
           </div>
